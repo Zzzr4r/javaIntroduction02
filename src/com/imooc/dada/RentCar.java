@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * 测试答答租车系统
  */
-public class Test {
+public class RentCar {
     public static void main(String[] args) {
         System.out.println("请选择是否要租车？1代表是，0代表否:");
         Scanner input = new Scanner(System.in);
