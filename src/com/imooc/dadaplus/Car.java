@@ -10,6 +10,17 @@ public abstract class Car {
     public String name;
     // 租金
     public int rent;
+    // 天数
+    public int days;
+
+    public int getDays() {
+        return days;
+    }
+
+    public void setDays(int days) {
+        this.days = days;
+    }
+
     // 车辆信息
     public abstract void information();
 

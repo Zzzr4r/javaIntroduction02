@@ -15,12 +15,19 @@ public class Bus extends Car{
         this.peopleCapacity = peopleCapacity;
     }
 
-    public Bus(int id, String name, int rent, int peopleCapacity) {
+    public Bus(int id, String name, int rent, int peopleCapacity, int days) {
         this.id = id;
         this.name = name;
         this.rent = rent;
         this.peopleCapacity = peopleCapacity;
+        this.days = days;
     }
+    public Bus(int id, String name, int rent, int peopleCapacity) {
+            this.id = id;
+            this.name = name;
+            this.rent = rent;
+            this.peopleCapacity = peopleCapacity;
+        }
 
     public Bus() {
     }

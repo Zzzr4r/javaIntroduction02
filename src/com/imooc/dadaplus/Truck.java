@@ -15,12 +15,20 @@ public class Truck extends Car {
         this.cargoCapacity = cargoCapacity;
     }
 
-    public Truck(int id, String name, int rent, int cargoCapacity) {
+    public Truck(int id, String name, int rent, int cargoCapacity, int days) {
         this.id = id;
         this.name = name;
         this.rent = rent;
         this.cargoCapacity = cargoCapacity;
+        this.days = days;
     }
+
+    public Truck(int id, String name, int rent, int cargoCapacity) {
+            this.id = id;
+            this.name = name;
+            this.rent = rent;
+            this.cargoCapacity = cargoCapacity;
+        }
 
     public Truck() {
     }

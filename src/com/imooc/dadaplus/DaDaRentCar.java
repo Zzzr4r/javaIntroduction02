@@ -1,6 +1,8 @@
 package com.imooc.dadaplus;
 
 import java.util.*;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 /**
  * 答答租车系统
@@ -8,7 +10,7 @@ import java.util.*;
 public class DaDaRentCar {
     public static void main(String[] args) {
         // 循环，直到return退出方法
-        while (true) {
+        label1:while (true) {
             // 数组存放系统中车辆信息
             Car[] cars = {new Bus(1, "奔驰", 1800, 5)
                             , new Bus(2, "宝马", 2400, 5)
@@ -42,22 +44,23 @@ public class DaDaRentCar {
                     }
                 }
                 // 定义租车总金额初始值
-                int rentSum = 0;
+//               todo int rentSum = 0;
 
-                // 存放租车信息
-                Map<Car, Integer> map = new HashMap<>();
 
-                Set<Map.Entry<Car, Integer>> entries = map.entrySet();
                 // 开始租车
-                while (true) {
+                label2:while (true) {
 
                     System.out.println("请选择您租车的序号，序号值范围：1——" + cars.length);
                     String carId = input.next();
                     try {
+                        // 记录租车序号
                         int realCarId = Integer.parseInt(carId);
                         if (realCarId < 1 || realCarId > cars.length) {
                             System.out.println("对不起，您输入的序号值不在规定范围内，请检查后，重新输入！");
                         } else {
+                            // 存放租车信息
+                            Map<Car, Integer> map = new HashMap<>();
+//                                        Integer currentCarNum = map.get(car);
 
                             for (Car car : cars) { // 找到所选择的车辆信息
                                 if (car.id == realCarId) {
@@ -83,16 +86,18 @@ public class DaDaRentCar {
                                         // 选择租车数量
                                         System.out.println("请选择租车数量：");
                                         int rentNum = input.nextInt();
-
-                                        // 将租用车和数量存入map中
                                         map.put(car, rentNum);
+                                        // 将map转换为entry对象，利用Iterator便于获取key,value
+                                        Set<Map.Entry<Car, Integer>> entries = map.entrySet();
 
-                                        entries.add((Map.Entry<Car, Integer>) map);
                                         // 选择租车天数
                                         System.out.println("请选择租车天数：");
                                         int rentDays = input.nextInt();
-                                        int rentCar = rent * rentNum * rentDays;
-                                        rentSum += rentCar ; // 第一次租车总金额
+                                        // 将天数设置到租车信息中
+                                        car.setDays(rentDays);
+
+//                                        int rentCar = rent * rentNum * rentDays;
+//                                        rentSum += rentCar; // todo 第一次租车总金额
 
                                         // 是否选择继续租车
                                         System.out.println("继续租车，请按1，退出系统，请按0：");
@@ -102,9 +107,11 @@ public class DaDaRentCar {
                                         } else if (confirm4 == 0){
                                             // 退出系统前，输出租车详情单
                                             System.out.println("您的租车账单为：");
+                                            // 输出列表的头信息
+                                            System.out.println("序号\t\t汽车名\t租金\t\t\t\t容量\t\t\t\t\t\t数量\t\t天数");
                                             // 通过迭代器循环迭代entries中的map
                                             if (entries != null) {
-                                                Iterator<Map.Entry<Car, Integer>> iterator = entries.iterator();
+                                                Iterator<Entry<Car, Integer>> iterator = entries.iterator();
                                                 // 租车总数量
                                                 int carNum = 0;
 
@@ -114,26 +121,52 @@ public class DaDaRentCar {
                                                 // 总载货量
                                                 int cargoCapacity = 0;
 
+                                                // 租车总金额
+                                                int rentSum = 0;
+
+                                                // 循环迭代整个entry对象
                                                 while (iterator.hasNext()) {
-                                                    Car currentCar = iterator.next().getKey();
-                                                    Integer count = iterator.next().getValue();
-                                                    carNum += count; // 计算租车总数量
+                                                    Entry<Car, Integer> next = iterator.next();
+                                                    Car currentCar = next.getKey();
+
+                                                    if (currentCar.id == realCarId) {
+                                                        // 将租用车和数量存入map中
+//                                                        map.put(currentCar, rentNum);
+                                                        next.setValue(next.getValue() + rentNum);
+                                                    }
+// todo map
+                                                    // 当前租车数量
+                                                    Integer count = next.getValue();
+                                                    // 计算租车总数量
+                                                    carNum += count;
+
+                                                    // 当前车辆天数
+                                                    int days = currentCar.days;
+
+                                                    // 当前车辆租金（1车1天）
+                                                    int perCent = currentCar.rent;
+                                                    rentSum += perCent * days;
+
+                                                    // 计算单独车辆类型的属性总值
                                                     if (currentCar instanceof Bus) { // 载人车辆调用载人信息
                                                         Bus bus = (Bus)currentCar;
-                                                        peopleCapacity += bus.getPeopleCapacity();
-                                                        System.out.println(bus.id + ".\t\t" + bus.name + "\t\t" + bus.rent + "元/天\t\t载人：" + bus.getPeopleCapacity() + "人\t\t" + count);
+                                                        peopleCapacity += bus.getPeopleCapacity() * count; //
+                                                        System.out.println(bus.id + ".\t\t" + bus.name + "\t\t" + bus.rent + "元/天\t\t载人：" + bus.getPeopleCapacity() + "人\t\t\t\t" + count + "\t\t" + bus.getDays());
                                                     } else if (currentCar instanceof Truck) { // 载货车辆调用载货信息
                                                         Truck truck = (Truck) currentCar;
-                                                        cargoCapacity += truck.getCargoCapacity();
-                                                        System.out.println(truck.id + ".\t\t" + truck.name + "\t\t" + truck.rent + "元/天\t\t载货：" + truck.getCargoCapacity() + "吨\t\t" + count);
+                                                        cargoCapacity += truck.getCargoCapacity() * count;
+                                                        System.out.println(truck.id + ".\t\t" + truck.name + "\t\t" + truck.rent + "元/天\t\t载货：" + truck.getCargoCapacity() + "吨\t\t\t\t" + count + "\t\t" + truck.getDays());
 
                                                     } else if (currentCar instanceof Pickup){ // 载人，载货车辆调用载人，载货信息
                                                         Pickup pickup = (Pickup)currentCar;
-                                                        peopleCapacity += pickup.getPeopleCapacity();
-                                                        cargoCapacity += pickup.getCargoCapacity();
-                                                        System.out.println(pickup.id + ".\t\t" + pickup.name + "\t\t" + pickup.rent + "元/天\t\t载人：" + pickup.getPeopleCapacity() + "人，载货：" + pickup.getCargoCapacity() + "吨\t\t" + count);
+                                                        peopleCapacity += pickup.getPeopleCapacity() * count;
+                                                        cargoCapacity += pickup.getCargoCapacity() * count;
+                                                        System.out.println(pickup.id + ".\t\t" + pickup.name + "\t\t" + pickup.rent + "元/天\t\t载人：" + pickup.getPeopleCapacity() + "人，载货："
+                                                                + pickup.getCargoCapacity() + "吨\t\t" + count + "\t\t" + pickup.getDays());
                                                     }
                                                 }
+
+                                                // 循环完毕，计算相关总量
 
                                                 // 输出租车总数量
                                                 System.out.println("您租车的总数量是：" + carNum + "辆");
@@ -153,15 +186,15 @@ public class DaDaRentCar {
                                             }
                                             return;
                                         }
-                                    } else {
-                                        continue; // 跳过本次循环，重新输入租车序号
+                                    } else if (confirm2 == 0){
+                                        System.out.println("很高兴为您服务，期待下次光临，再见！");
+                                        return; // 不租车，跳过最外层循环，退出系统
                                     }
 
-                                } else {
-                                    System.out.println("对不起，没有找到您所选择的车辆序号，请重新选择！");
-                                    continue;
                                 }
                             }
+
+                            continue;
                         }
                     } catch (NumberFormatException e) {
                         e.printStackTrace();

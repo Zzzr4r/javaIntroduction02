@@ -1,5 +1,7 @@
 package com.imooc.dadaplus;
 
+import java.util.HashMap;
+
 /**
  * 皮卡（子类）：载人，载货属性，覆写information()
  */
@@ -25,12 +27,21 @@ public class Pickup extends Car{
         this.cargoCapacity = cargoCapacity;
     }
 
-    public Pickup(int id, String name, int rent, int peopleCapacity, int cargoCapacity) {
+    public Pickup(int id, String name, int rent, int peopleCapacity, int cargoCapacity, int days) {
         this.id = id;
         this.name = name;
         this.rent = rent;
         this.peopleCapacity = peopleCapacity;
         this.cargoCapacity = cargoCapacity;
+        this.days = days;
+    }
+
+    public Pickup(int id, String name, int rent, int peopleCapacity, int cargoCapacity) {
+            this.id = id;
+            this.name = name;
+            this.rent = rent;
+            this.peopleCapacity = peopleCapacity;
+            this.cargoCapacity = cargoCapacity;
     }
 
     public Pickup() {
