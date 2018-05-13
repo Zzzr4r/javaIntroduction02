@@ -99,6 +99,7 @@ public class RentCar {
             }
             priceSum = priceSum * rentDays;
             System.out.println("***租车总价格：" + priceSum + "元");
+            input.close();
         } else {
             System.out.println("欢迎下次光临答答租车！");
         }
