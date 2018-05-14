@@ -43,9 +43,9 @@ public class DaDaRentCar {
                         return;
                     }
                 }
-                // 定义租车总金额初始值
-//               todo int rentSum = 0;
 
+                // 存放租车信息
+                Map<Car, Integer> map = new HashMap<>();
 
                 // 开始租车
                 label2:while (true) {
@@ -58,9 +58,6 @@ public class DaDaRentCar {
                         if (realCarId < 1 || realCarId > cars.length) {
                             System.out.println("对不起，您输入的序号值不在规定范围内，请检查后，重新输入！");
                         } else {
-                            // 存放租车信息
-                            Map<Car, Integer> map = new HashMap<>();
-//                                        Integer currentCarNum = map.get(car);
 
                             for (Car car : cars) { // 找到所选择的车辆信息
                                 if (car.id == realCarId) {
@@ -96,14 +93,11 @@ public class DaDaRentCar {
                                         // 将天数设置到租车信息中
                                         car.setDays(rentDays);
 
-//                                        int rentCar = rent * rentNum * rentDays;
-//                                        rentSum += rentCar; // todo 第一次租车总金额
-
                                         // 是否选择继续租车
                                         System.out.println("继续租车，请按1，退出系统，请按0：");
                                         int confirm4 = input.nextInt();
                                         if (confirm4 == 1) {
-                                            continue; // 退出循环，重新输入租车序号
+                                            break; // 退出本次循环，重新输入租车序号
                                         } else if (confirm4 == 0){
                                             // 退出系统前，输出租车详情单
                                             System.out.println("您的租车账单为：");
@@ -128,12 +122,12 @@ public class DaDaRentCar {
                                                 while (iterator.hasNext()) {
                                                     Entry<Car, Integer> next = iterator.next();
                                                     Car currentCar = next.getKey();
-
+/*
                                                     if (currentCar.id == realCarId) {
                                                         // 将租用车和数量存入map中
 //                                                        map.put(currentCar, rentNum);
                                                         next.setValue(next.getValue() + rentNum);
-                                                    }
+                                                    }*/
 // todo map
                                                     // 当前租车数量
                                                     Integer count = next.getValue();
@@ -145,7 +139,7 @@ public class DaDaRentCar {
 
                                                     // 当前车辆租金（1车1天）
                                                     int perCent = currentCar.rent;
-                                                    rentSum += perCent * days;
+                                                    rentSum += perCent * count * days;
 
                                                     // 计算单独车辆类型的属性总值
                                                     if (currentCar instanceof Bus) { // 载人车辆调用载人信息
