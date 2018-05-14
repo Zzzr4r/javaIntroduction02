@@ -12,6 +12,16 @@ public abstract class Car {
     public int rent;
     // 天数
     public int days;
+    // 数量
+    public int rentNum;
+
+    public int getRentNum() {
+        return rentNum;
+    }
+
+    public void setRentNum(int rentNum) {
+        this.rentNum = rentNum;
+    }
 
     public int getDays() {
         return days;

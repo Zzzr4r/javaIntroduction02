@@ -83,7 +83,15 @@ public class DaDaRentCar {
                                         // 选择租车数量
                                         System.out.println("请选择租车数量：");
                                         int rentNum = input.nextInt();
-                                        map.put(car, rentNum);
+                                        // 更新map中租车天数，key值相同的value值累加
+                                        if (car.getRentNum() == 0) {
+                                            map.put(car, rentNum);
+                                            car.setRentNum(rentNum);
+                                        } else {
+                                            map.put(car, car.getRentNum() + rentNum);
+                                            car.setRentNum(car.getRentNum() + rentNum);
+                                        }
+
                                         // 将map转换为entry对象，利用Iterator便于获取key,value
                                         Set<Map.Entry<Car, Integer>> entries = map.entrySet();
 
@@ -91,7 +99,11 @@ public class DaDaRentCar {
                                         System.out.println("请选择租车天数：");
                                         int rentDays = input.nextInt();
                                         // 将天数设置到租车信息中
-                                        car.setDays(rentDays);
+                                        if (car.getDays() == 0) {
+                                            car.setDays(rentDays);
+                                        } else {
+                                            car.setDays(car.getDays() + rentDays);
+                                        }
 
                                         // 是否选择继续租车
                                         System.out.println("继续租车，请按1，退出系统，请按0：");
@@ -106,6 +118,7 @@ public class DaDaRentCar {
                                             // 通过迭代器循环迭代entries中的map
                                             if (entries != null) {
                                                 Iterator<Entry<Car, Integer>> iterator = entries.iterator();
+//                                                todo Collections.sort();
                                                 // 租车总数量
                                                 int carNum = 0;
 
@@ -122,13 +135,6 @@ public class DaDaRentCar {
                                                 while (iterator.hasNext()) {
                                                     Entry<Car, Integer> next = iterator.next();
                                                     Car currentCar = next.getKey();
-/*
-                                                    if (currentCar.id == realCarId) {
-                                                        // 将租用车和数量存入map中
-//                                                        map.put(currentCar, rentNum);
-                                                        next.setValue(next.getValue() + rentNum);
-                                                    }*/
-// todo map
                                                     // 当前租车数量
                                                     Integer count = next.getValue();
                                                     // 计算租车总数量
