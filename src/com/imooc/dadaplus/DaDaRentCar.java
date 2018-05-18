@@ -110,81 +110,87 @@ public class DaDaRentCar {
                                         int confirm4 = input.nextInt();
                                         if (confirm4 == 1) {
                                             break; // 退出本次循环，重新输入租车序号
-                                        } else if (confirm4 == 0){
-                                            // 退出系统前，输出租车详情单
-                                            System.out.println("您的租车账单为：");
-                                            // 输出列表的头信息
-                                            System.out.println("序号\t\t汽车名\t租金\t\t\t\t容量\t\t\t\t\t\t数量\t\t天数");
-                                            // 通过迭代器循环迭代entries中的map
-                                            if (entries != null) {
-                                                Iterator<Entry<Car, Integer>> iterator = entries.iterator();
-//                                                todo Collections.sort();
-                                                // 租车总数量
-                                                int carNum = 0;
+                                        } else if (confirm4 == 0) {
+                                            try {
+                                                // 退出系统前，输出租车详情单
+                                                System.out.println("您的租车账单为：");
+                                                // 输出列表的头信息
+                                                System.out.println("序号\t\t汽车名\t租金\t\t\t\t容量\t\t\t\t\t\t数量\t\t天数");
+                                                // 通过迭代器循环迭代entries中的map
+                                                if (entries != null) {
+                                                    Iterator<Entry<Car, Integer>> iterator = entries.iterator();
+    //                                                todo Collections.sort();
+                                                    // 租车总数量
+                                                    int carNum = 0;
 
-                                                // 总载客量
-                                                int peopleCapacity = 0;
+                                                    // 总载客量
+                                                    int peopleCapacity = 0;
 
-                                                // 总载货量
-                                                int cargoCapacity = 0;
+                                                    // 总载货量
+                                                    int cargoCapacity = 0;
 
-                                                // 租车总金额
-                                                int rentSum = 0;
+                                                    // 租车总金额
+                                                    int rentSum = 0;
 
-                                                // 循环迭代整个entry对象
-                                                while (iterator.hasNext()) {
-                                                    Entry<Car, Integer> next = iterator.next();
-                                                    Car currentCar = next.getKey();
-                                                    // 当前租车数量
-                                                    Integer count = next.getValue();
-                                                    // 计算租车总数量
-                                                    carNum += count;
+                                                    // 循环迭代整个entry对象
+                                                    while (iterator.hasNext()) {
+                                                        Entry<Car, Integer> next = iterator.next();
+                                                        Car currentCar = next.getKey();
+                                                        // 当前租车数量
+                                                        Integer count = next.getValue();
+                                                        // 计算租车总数量
+                                                        carNum += count;
 
-                                                    // 当前车辆天数
-                                                    int days = currentCar.days;
+                                                        // 当前车辆天数
+                                                        int days = currentCar.days;
 
-                                                    // 当前车辆租金（1车1天）
-                                                    int perCent = currentCar.rent;
-                                                    rentSum += perCent * count * days;
+                                                        // 当前车辆租金（1车1天）
+                                                        int perCent = currentCar.rent;
+                                                        rentSum += perCent * count * days;
 
-                                                    // 计算单独车辆类型的属性总值
-                                                    if (currentCar instanceof Bus) { // 载人车辆调用载人信息
-                                                        Bus bus = (Bus)currentCar;
-                                                        peopleCapacity += bus.getPeopleCapacity() * count; //
-                                                        System.out.println(bus.id + ".\t\t" + bus.name + "\t\t" + bus.rent + "元/天\t\t载人：" + bus.getPeopleCapacity() + "人\t\t\t\t" + count + "\t\t" + bus.getDays());
-                                                    } else if (currentCar instanceof Truck) { // 载货车辆调用载货信息
-                                                        Truck truck = (Truck) currentCar;
-                                                        cargoCapacity += truck.getCargoCapacity() * count;
-                                                        System.out.println(truck.id + ".\t\t" + truck.name + "\t\t" + truck.rent + "元/天\t\t载货：" + truck.getCargoCapacity() + "吨\t\t\t\t" + count + "\t\t" + truck.getDays());
+                                                        // 计算单独车辆类型的属性总值
+                                                        if (currentCar instanceof Bus) { // 载人车辆调用载人信息
+                                                            Bus bus = (Bus)currentCar;
+                                                            peopleCapacity += bus.getPeopleCapacity() * count; //
+                                                            System.out.println(bus.id + ".\t\t" + bus.name + "\t\t" + bus.rent + "元/天\t\t载人：" + bus.getPeopleCapacity() + "人\t\t\t\t" + count + "\t\t" + bus.getDays());
+                                                        } else if (currentCar instanceof Truck) { // 载货车辆调用载货信息
+                                                            Truck truck = (Truck) currentCar;
+                                                            cargoCapacity += truck.getCargoCapacity() * count;
+                                                            System.out.println(truck.id + ".\t\t" + truck.name + "\t\t" + truck.rent + "元/天\t\t载货：" + truck.getCargoCapacity() + "吨\t\t\t\t" + count + "\t\t" + truck.getDays());
 
-                                                    } else if (currentCar instanceof Pickup){ // 载人，载货车辆调用载人，载货信息
-                                                        Pickup pickup = (Pickup)currentCar;
-                                                        peopleCapacity += pickup.getPeopleCapacity() * count;
-                                                        cargoCapacity += pickup.getCargoCapacity() * count;
-                                                        System.out.println(pickup.id + ".\t\t" + pickup.name + "\t\t" + pickup.rent + "元/天\t\t载人：" + pickup.getPeopleCapacity() + "人，载货："
-                                                                + pickup.getCargoCapacity() + "吨\t\t" + count + "\t\t" + pickup.getDays());
+                                                        } else if (currentCar instanceof Pickup){ // 载人，载货车辆调用载人，载货信息
+                                                            Pickup pickup = (Pickup)currentCar;
+                                                            peopleCapacity += pickup.getPeopleCapacity() * count;
+                                                            cargoCapacity += pickup.getCargoCapacity() * count;
+                                                            System.out.println(pickup.id + ".\t\t" + pickup.name + "\t\t" + pickup.rent + "元/天\t\t载人：" + pickup.getPeopleCapacity() + "人，载货："
+                                                                    + pickup.getCargoCapacity() + "吨\t\t" + count + "\t\t" + pickup.getDays());
+                                                        }
                                                     }
+
+                                                    // 循环完毕，计算相关总量
+
+                                                    // 输出租车总数量
+                                                    System.out.println("您租车的总数量是：" + carNum + "辆");
+
+                                                    // 输出载客总人数
+                                                    System.out.println("您租车的总载客人数是：" + peopleCapacity + "人");
+
+                                                    // 输出载货总吨数
+                                                    System.out.println("您租车的总载货吨数是：" + cargoCapacity + "吨");
+
+                                                    // 输出租车总金额
+                                                    System.out.println("您租车的总金额是：" + rentSum + "元");
+
+                                                    // 结束语
+                                                    System.out.println("很高兴为您服务，期待您的下次光临，祝你旅途愉快，一路顺风！");
+
                                                 }
-
-                                                // 循环完毕，计算相关总量
-
-                                                // 输出租车总数量
-                                                System.out.println("您租车的总数量是：" + carNum + "辆");
-
-                                                // 输出载客总人数
-                                                System.out.println("您租车的总载客人数是：" + peopleCapacity + "人");
-
-                                                // 输出载货总吨数
-                                                System.out.println("您租车的总载货吨数是：" + cargoCapacity + "吨");
-
-                                                // 输出租车总金额
-                                                System.out.println("您租车的总金额是：" + rentSum + "元");
-
-                                                // 结束语
-                                                System.out.println("很高兴为您服务，期待您的下次光临，祝你旅途愉快，一路顺风！");
-
+                                                return;
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            } finally {
+                                                input.close();
                                             }
-                                            return;
                                         }
                                     } else if (confirm2 == 0){
                                         System.out.println("很高兴为您服务，期待下次光临，再见！");
